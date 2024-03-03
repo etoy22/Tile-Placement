@@ -15,8 +15,8 @@ class Landscape():
 
         for i in range (len(area)):
             for j in range (len(area)):
-                if self.area[i][j] != 0:
-                    self.full[self.area[i][j]-1] += 1
+                if area[i][j] != 0:
+                    self.full[area[i][j]-1] += 1
 
 
     def el_shape(self,side):

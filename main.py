@@ -1,4 +1,6 @@
-from landscape import Landscape, add_arrays
+from land import Land, full_calc
+from queue import PriorityQueue
+
 inputFile = 'input.txt'
 
 
@@ -55,23 +57,31 @@ def get_subarrays(array):
     return allSubArrays
 
 
-array, shape, expected = parse_input(inputFile)
 
-all_subarrays = get_subarrays(array)
 
-array_landscape = []
+if __name__ == "__main__":
+    array, shape, expected = parse_input(inputFile)
+    start = full_calc(array)
+    all_subarrays = get_subarrays(array)
+    scape = Land(all_subarrays,start,expected,shape)
+    nextState = PriorityQueue()
+    nextState.put(scape)
+    while True:
+        state =  nextState.get()
+        check = state.checker()
+        if(check == 2): #Found where it works
+            break
+        newState = state.next()
+        for i in range(len(newState)):
+            nextState.put(newState[i])
 
-start = [0,0,0,0]
-
-for i in range (len(all_subarrays)):
-    land = Landscape(all_subarrays[i])
-    start = add_arrays(start,land.full)
-    array_landscape.append(land)
-
-print(start)
-print(expected)
-print(array_landscape[0].el_shape(0))
-# print(array_landscape[0].el_shape(1))
-print(array_landscape[0].el_shape(2))
-print(array_landscape[0].outer_boundry(0,2))
-# print(array_landscape[0])
+    #     node = None
+    #     while node == None: # Only loads in the new state if its not on the closed list
+    #         if nextState.queue[0][1] not in closed:
+    #             node = nextState.queue[0][1]
+    #         nextState.get()
+        
+    #     if node.heuristicsValue == 0: # Once its done
+    #         node.reverseCall() 
+    #         break
+    
