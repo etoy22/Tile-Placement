@@ -1,8 +1,7 @@
-from land import Land, full_calc
-from queue import PriorityQueue
+from land import Land
+from helper import full_calc
 
 inputFile = 'input.txt'
-
 
 def turn_to_int(x):
     A = []
@@ -27,9 +26,9 @@ def parse_input(inFile):
             for tile in tiles:
                 tile = tile.strip("{}\n")
                 key, value = tile.split("=")
-                shape[key] = value
+                shape[key] = (int(value))
         elif (line.find(":") != -1):
-            expected[count] = int(line[line.find(':')+1:])
+            expected[count] = (int(line[line.find(':')+1:]))
             count += 1
         elif(line[0] == " "):
             row = "0" + line[1:]
@@ -57,23 +56,15 @@ def get_subarrays(array):
     return allSubArrays
 
 
-
-
 if __name__ == "__main__":
     array, shape, expected = parse_input(inputFile)
     start = full_calc(array)
     all_subarrays = get_subarrays(array)
-    scape = Land(all_subarrays,start,expected,shape)
-    nextState = PriorityQueue()
-    nextState.put(scape)
-    while True:
-        state =  nextState.get()
-        check = state.checker()
-        if(check == 2): #Found where it works
-            break
-        newState = state.next()
-        for i in range(len(newState)):
-            nextState.put(newState[i])
+    land = Land (all_subarrays,start,expected,shape)
+    land.run()
+    # land.next()
+
+        
 
     #     node = None
     #     while node == None: # Only loads in the new state if its not on the closed list

@@ -1,0 +1,15 @@
+# Landscape
+2 2 1 3
+  2 1 3
+2 1    
+  3 2     
+
+
+# Tiles: 
+{OUTER_BOUNDARY=1, EL_SHAPE=1, FULL_BLOCK=1}
+
+# Targets: 
+1:3
+2:2
+3:2
+4:0
