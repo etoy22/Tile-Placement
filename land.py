@@ -18,7 +18,7 @@ class Land():
     goal = [] # Goal to reach
     limit = {} #Limit EL_SHAPE, OUTER_BOUNDARY, FULL_BLOCK
     bushes = [] #Total visible bushes
-    choice = []
+    choice = [] #The choices that have been made at each point
 
     def __init__(self,area,bushes,goal,limit):
         for i in range (len(area)):
@@ -52,6 +52,16 @@ class Land():
         self.limit = limit
 
     def nextTile(self,iteration,cBush):
+        '''
+        This function determines bush area for a specific iteration
+        
+        Input:
+        - Iteration (int): Points to a part pf the array
+        - cBush (array): Says the current amount of bushes viewable as of that point
+        
+        Returns:
+        - value (int): Returns 0 if its not found 1 if the answer is found  
+        '''
         test = helper.sub_arrays(self.goal,cBush)
         for i in range(len(test)):
             if test[i]<0:
@@ -94,118 +104,9 @@ class Land():
         
 
     def run(self):
+        '''
+        Thing to run the program
+        '''
         i = 0
         cBush = [0,0,0,0]
         self.nextTile(i,cBush)
-
-
-    # def __lt__(self, other):
-    #     '''
-    #     Comparison for calculation between arrays
-    #     '''
-    #     if self.hValue == other.hValue:
-    #         if(self.limit[0]==other.limit[0]):
-    #             if (self.limit[1]==other.limit[1]):
-    #                 if (self.limit[2]==other.limit[2]):
-    #                     return True
-    #                 return self.limit[2]<other.limit[2] 
-    #             return self.limit[1]<other.limit[1] 
-    #         return self.limit[0]<other.limit[0]
-    #     return self.hValue < other.hValue
-
-    # def heuristic(self):
-    #     '''
-    #     The way to calculate which value is closer to the end result
-    #     '''
-    #     track = helper.sub_arrays(self.bushes,self.goal)
-    #     for i in range (4):
-    #         if (track[i]<0):
-    #             print("Number VALUE IS BELOW 0")
-    #         self.hValue += track[i]
-
-    # def checker(self,subArea):
-    #     subBush = helper.sub_arrays(self.bushes,subArea) # Current Bushes - possible subtraction
-    #     bellow = helper.sub_arrays(subBush,self.goal) # Checking to make sure that nothing is below the goal
-    #     for i in range(len(bellow)): # Loops through the array
-    #         if (bellow[i] < 0 or subBush[i]<0): # Makes sure that nothing is below 0 meaning that it is below the goal
-    #             return None
-    #     return subBush
-
-
-    # # def calc_next(self):
-    # #     for i in range (len(self.area)): #Checks all the areas
-    # #         # if(self.area[i]["choice"]==None): # Excludes areas that already have a tile
-    # #             # if(self.limit[2]>0): # Checks to make sure that there are still FULL_BLOCKS to use
-    # #                 # subBush = self.checker(self.area[i]["full"]) # Checks to make sure that using the tile is valid for full
-    # #                 # if (subBush != None): # If it passes then that means that it gets added
-    # #                 #     # newArea = copy.deepcopy(self.area)
-    # #                 #     # newLimit = copy.deepcopy(self.limit)
-    # #                 #     # newArea[i]["choice"] = "FULL_BLOCK"
-    # #                 #     # newLimit[2] -= 1
-    # #                 #     # newLand = Land(newArea,subBush,self.goal,newLimit)
-
-    # #             if(self.limit[1]>0): # Checks to make sure that there are still OUTER_BOUNDARY to use
-    # #                 subBush=self.checker(self.area[i]["outer"])# Checks to make sure that using the tile is valid for outer
-    # #                 if (subBush != None):
-    # #                     newArea = copy.deepcopy(self.area)
-    # #                     newLimit = copy.deepcopy(self.limit)
-    # #                     newArea[i]["choice"] = "OUTER_BOUNDARY"
-    # #                     newLimit[1] -= 1
-    # #                     newLand = Land(newArea,subBush,self.goal,newLimit)
-    # #                     self.nextLand.put(newLand)
-    # #             if(self.limit[0]>0):# Checks to make sure that there are still EL_SHAPE to use
-    # #                 for j in range (1,5): 
-    # #                     subBush = self.checker(self.area[i]["el"+str(j)]) 
-    # #                     if (subBush != None):
-    # #                         newArea = copy.deepcopy(self.area)
-    # #                         newLimit = copy.deepcopy(self.limit)
-    # #                         newArea[i]["choice"] = "EL_SHAPE"
-    # #                         newLimit[0] -= 1
-    # #                         newLand = Land(newArea,subBush,self.goal,newLimit)
-    # #                         self.nextLand.put(newLand)
-
-    # def next(self):
-    #     if (self.hValue == 0 and self.limit == [0,0,0]): #Determines that we have found 
-    #         self.done()
-    #         return 1
-        
-    #     else:
-    #         while len(self.nextLand)>0:
-    #             newStuff = max(self.nextLand, key=lambda x: x[0])
-    #             self.nextLand.remove(newStuff)
-    #             if len(newStuff) == 4:
-    #                 lookup = "el" + str(newStuff[3])
-    #                 val = 1
-
-    #             elif newStuff[2] == "FULL_BLOCK":
-    #                 lookup = "full"
-    #                 val = 2
-    #             else:
-    #                 lookup = "outer"
-    #                 val = 0
-    #             if (self.limit[val]>0):
-    #                 newBush = self.checker(self.area[newStuff[1]][lookup])
-    #                 if newBush != None:
-    #                     newArea = copy.deepcopy(self.area)
-    #                     newLimit = copy.deepcopy(self.limit)
-    #                     newNext = []
-    #                     newArea[newStuff[1]]["choice"] = newStuff[2]
-    #                     newLimit[val] -= 1
-    #                     for i in range (len(self.nextLand)):
-    #                         if(self.nextLand[i][1] == newStuff[1]):
-    #                             continue
-    #                         if (self.nextLand[i][2]== newStuff[2] and newl[val] == 0):
-    #                             continue
-    #                         newNext.append(self.nextLand[i])
-    #                     newLand = Land(newArea,newBush,self.goal,newLimit,newNext)
-    #                     result = newLand.next()
-    #                     if result == 1:
-    #                         return 1
-    #             else:
-    #                 print("self.limit issue")
-    #         return 0
-
-    # def done(self):
-    #     print(self.limit)
-    #     for i in range (len(self.area)):
-    #         print(i,self.area[i]["choice"])
