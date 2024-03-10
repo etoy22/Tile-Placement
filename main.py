@@ -1,5 +1,4 @@
 from land import Land
-from helper import full_calc
 
 inputFile = 'input.txt'
 
@@ -11,12 +10,12 @@ def turn_to_int(x):
     - x (array): Array of strings
     
     Returns
-    - A (array): Array of Ints
+    - array (array): Array of Ints
     '''
-    A = []
+    array = []
     for i in x:
-        A.append(int(i))
-    return A
+        array.append(int(i))
+    return array
 
 def parse_input(inFile):
     '''
@@ -26,8 +25,8 @@ def parse_input(inFile):
     inFile (string): File name
     
     Returns:
-    - A (array): Takes the Landscape and puts it into an Array
-    - shape (dictonary): A dictonary of the output of tiles 
+    - array (array): Takes the Landscape and puts it into an Array
+    - shape (dictonary): array dictonary of the output of tiles 
     - expected (array): This stores what the targets 
     '''
     with open(inFile, 'r') as file:
@@ -36,7 +35,7 @@ def parse_input(inFile):
     shape = {}
     expected = [0,0,0,0]
     count = 0
-    A = []
+    array = []
 
     for line in lines: # Goes through every line
         if(line.find('#') != -1): #Skips the line if # is found
@@ -53,12 +52,12 @@ def parse_input(inFile):
         elif(line[0] == " "): # If the program starts with a space we instead make it start with a 0
             row = "0" + line[1:]
             row = row.replace("  "," 0") # Replaces any instance of double space with a 0
-            A.append(turn_to_int(row.split()))
+            array.append(turn_to_int(row.split()))
         elif (line[0].isdigit()):
             row = line.replace("  "," 0")# Replaces any instance of double space with a 0
-            A.append(turn_to_int(row.split())) 
+            array.append(turn_to_int(row.split())) 
     
-    return A, shape, expected
+    return array, shape, expected
 
 
 def get_subarrays(array):
@@ -84,7 +83,7 @@ def get_subarrays(array):
 
 if __name__ == "__main__":
     array, shape, expected = parse_input(inputFile)
-    start = full_calc(array)
+    start = [0,0,0,0]
     all_subarrays = get_subarrays(array)
     land = Land (all_subarrays,start,expected,shape)
     land.run()
